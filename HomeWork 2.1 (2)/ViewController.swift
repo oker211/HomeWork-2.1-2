@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum CorrentLight {
+    case red
+    case yellow
+    case green
+}
+
 class ViewController: UIViewController {
 
     //MARK: IBOutlet
@@ -16,7 +22,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var nextButton: UIButton!
     
     //MARK: Properties
-    let defaultAlphaColor: CGFloat = 0.5
+    private var correntLight: CorrentLight = .red
+    private let lightIsOn: CGFloat = 1
+    private let lightIsOff: CGFloat = 0.3
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,28 +36,36 @@ class ViewController: UIViewController {
         nextButton.layer.cornerRadius = nextButton.frame.height / 5
             
         // Устанавливаем цвет Альфа у вью
-        redView.alpha = defaultAlphaColor
-        yellowView.alpha = defaultAlphaColor
-        greenView.alpha = defaultAlphaColor
+        redView.alpha = lightIsOff
+        yellowView.alpha = lightIsOff
+        greenView.alpha = lightIsOff
+        
+        // Устанавливаем текст кнопки
+        nextButton.setTitle("Start", for: .normal)
+        
     }
 
     //MARK: IBAction
     @IBAction func pressButton() {
+        
+        nextButton.setTitle("Next", for: .normal)
     
-         if greenView.alpha == defaultAlphaColor && yellowView.alpha == defaultAlphaColor && redView.alpha == defaultAlphaColor {
-             redView.alpha = 1.0
-         } else if greenView.alpha == defaultAlphaColor && yellowView.alpha == defaultAlphaColor && redView.alpha == 1.0 {
-             redView.alpha = defaultAlphaColor
-             yellowView.alpha = 1.0
-         } else if greenView.alpha == defaultAlphaColor && yellowView.alpha == 1.0 && redView.alpha == defaultAlphaColor {
-             yellowView.alpha = defaultAlphaColor
-             greenView.alpha = 1.0
-         } else if greenView.alpha == 1 && yellowView.alpha == defaultAlphaColor && redView.alpha == defaultAlphaColor {
-             greenView.alpha = defaultAlphaColor
-             redView.alpha = 1.0
-         }
-     }
-
+        switch correntLight {
+       
+        case .red:
+            greenView.alpha = lightIsOff
+            redView.alpha = lightIsOn
+            correntLight = .yellow
+        case .yellow:
+            redView.alpha = lightIsOff
+            yellowView.alpha = lightIsOn
+            correntLight = .green
+        case .green:
+            yellowView.alpha = lightIsOff
+            greenView.alpha = lightIsOn
+            correntLight = .red
+        }
+}
     
     //MARK: Methods
 
